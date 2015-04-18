@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="lib/jquery-1.8.3.min.js"></script>
+	<script src="lib/three.min.js"></script>
+	<script src="lib/Detector.js"></script>
+	<script src="lib/Coordinates.js"></script>
+	<script src="lib/OrbitAndPanControls.js"></script>
+	<script src="lib/TrackballControls.js"></script>
+	<script src="lib/uclass_TeapotGeometry.js"></script>
+	<script src="lib/uclass_TeacupGeometry.js"></script>
+	<script src="lib/uclass_TeaspoonGeometry.js"></script>
+	<script src="lib/uclass_BeveledBlockGeometry.js"></script>
+	<script src="lib/uclass_shaders.js"></script>
+	<script src="lib/stats.min.js"></script>
+	<script src="lib/dat.gui.min.js"></script>
+	<script src="lib/tween.min.js"></script>
+	<script src="lib/sprintf.js"></script>
+	<script type="text/javascript">
+	
+	
+	
+/******************************************************************************/
+
+ 	zabcanik = new THREE.Object3D();
+	perka = new THREE.Object3D();
+
+	bat = new THREE.Object3D();
+	batt = new THREE.Object3D();
+	k = new THREE.Object3D();	
+	
+	
+function init() {
+	  canvas =  document.getElementById("container");
+		   
+		    renderer =  new THREE.WebGLRenderer();
+			renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+			canvas.appendChild(renderer.domElement);
+			
+		 scene = new THREE.Scene();
+		 
+		 //camera
+		 camera = new THREE.PerspectiveCamera(100, canvas.offsetWidth / canvas.offsetHeight, 1, 400000);
+		 camera.position.set(0,50,500);
+		 scene.add(camera);
+		
+		// control
+		control = new THREE.TrackballControls(camera);
+		//svetlo od leva strana
+		lightsn = new THREE.DirectionalLight(0xffffff , 1.5);
+		lightsn.position.set(4000,3050,510);
+		scene.add(lightsn);
+	
+		//svetlo od desna strana
+		lightsn = new THREE.DirectionalLight(0xffffff , 1.2);
+		lightsn.position.set(-4000,3050,510);
+		scene.add(lightsn);
+		
+		//svetlo od lgore strana
+		lightsn = new THREE.DirectionalLight(0xffffff , 1);
+		lightsn.position.set(0,4000,0);
+		scene.add(lightsn);
+		
+			//svetlo od lgore strana
+		lightsn = new THREE.DirectionalLight(0xffffff , 1);
+		lightsn.position.set(0,-4000,0);
+		scene.add(lightsn);
+		
+		
+		inSide();
+ 
+	
+}
+
+
+function inSide()
+{
+
+		//sky defiunition
+						var skyGeometry = new THREE.SphereGeometry(550,32,32);
+						var skyMat = new THREE.MeshLambertMaterial({color:0x3399FF, 	side: THREE.BackSide });
+						var skyObject = new THREE.Mesh(skyGeometry,skyMat);
+						scene.add(skyObject);
+						
+	
+      
+		//deifinition left prop
+			//prsten
+		 
+        var radius = 25;
+        var tubeRadius = 3;
+        var radialSegments = 6 * 10;
+        var tubularSegments = 7 * 15;
+        var arc = Math.PI *2;
+        var geometry = new THREE.TorusGeometry( radius, tubeRadius, radialSegments, tubularSegments, arc );
+        var material =  new THREE.MeshLambertMaterial( { color:0x4d4d4d, shading: THREE.FlatShading } );
+
+        for ( var i = 0; i < 30; i ++ ) {
+          var mesh = new THREE.Mesh( geometry, material );
+		  mesh.rotation.x=0;
+		  mesh.position.x=-160;
+		  mesh.position.z = i+1;
+		  mesh.position.y=45;
+          mesh.updateMatrix();
+          mesh.matrixAutoUpdate = false;
+          scene.add( mesh );
+        } 
+	
+		//deifinition right prop
+			//prsten
+		 
+        var radius = 25;
+        var tubeRadius = 3;
+        var radialSegments = 6 * 10;
+        var tubularSegments = 7 * 15;
+        var arc = Math.PI *2;
+        var geometry = new THREE.TorusGeometry( radius, tubeRadius, radialSegments, tubularSegments, arc );
+        var material =  new THREE.MeshLambertMaterial( { color:0x4d4d4d, shading: THREE.FlatShading } );
+
+        for ( var i = 0; i < 30; i ++ ) {
+          var mesh = new THREE.Mesh( geometry, material );
+		  mesh.rotation.x=0;
+		  mesh.position.x=160;
+		  mesh.position.z = i+1;
+		  mesh.position.y=45;
+          mesh.updateMatrix();
+          mesh.matrixAutoUpdate = false;
+          scene.add( mesh );
+        } 
+		// perki prop =====================================	
+		
+		cilinderGeometry = new THREE.CylinderGeometry(15,15,25,32,32);
+		cilinderMaterial = new THREE.MeshLambertMaterial({ color:0xff0000 });
+		cilinderObject = new THREE.Mesh(cilinderGeometry,cilinderMaterial);
+		cilinderObject.position.x=-160;
+		cilinderObject.position.y=45;
+		cilinderObject.rotation.x =4.7;
+		cilinderObject.rotation.z=0;
+		scene.add(cilinderObject);
+		
+		cilinderGeometry = new THREE.CylinderGeometry(15,15,25,32,32);
+		cilinderMaterial = new THREE.MeshLambertMaterial({ color:0xff0000 });
+		cilinderObject = new THREE.Mesh(cilinderGeometry,cilinderMaterial);
+		cilinderObject.position.x=160;
+		cilinderObject.position.y=45;
+		cilinderObject.rotation.x =4.7;
+		cilinderObject.rotation.z=0;
+		scene.add(cilinderObject);
+		
+		for(var i=0; i<=4; i++)
+		{
+			 cube = new THREE.Mesh(
+							new THREE.CubeGeometry(25,5,1),
+							new THREE.MeshLambertMaterial({color:0x000000})
+					);
+					cube.position.x=12;
+					cube.position.y=50;
+					cube.rotation.y=0;
+					cube.rotation.x=4;
+					
+					var clockMarksa = new THREE.Object3D();
+					clockMarksa.add(cube);
+					clockMarksa.rotation.y = 70*i*Math.PI/180; // radiani
+					
+					k.position.x=-160;
+					k.position.y=45;
+					k.position.z=70;
+					k.rotation.x = 4.7;
+					
+					
+					k.add(clockMarksa);
+		}
+		scene.add(k);
+
+	
+	for(var il=0; il<=4; il++)
+		{
+			 cube1 = new THREE.Mesh(
+							new THREE.CubeGeometry(25,5,1),
+							new THREE.MeshLambertMaterial({color:0x000000})
+					);
+					cube1.position.x=12;
+					cube1.position.y=50;
+					cube1.rotation.y=0;
+					cube1.rotation.x=4;
+					
+					var clockMarksa1 = new THREE.Object3D();
+					clockMarksa1.add(cube1);
+					clockMarksa1.rotation.y = 70*il*Math.PI/180; // radiani
+					
+					perka.position.x=160;
+					perka.position.y=45;
+					perka.position.z=70;
+					perka.rotation.x = 4.7;
+					
+					perka.add(clockMarksa1);
+		}
+		scene.add(perka);
+		
+		//define cilinder
+		
+		cilinderGeometry = new THREE.CylinderGeometry(25,25,35,32,32);
+		cilinderMaterial = new THREE.MeshLambertMaterial({ color:0xff0000 });
+		cilinderObject = new THREE.Mesh(cilinderGeometry,cilinderMaterial);
+		cilinderObject.position.x=-160;
+		cilinderObject.position.y=0;
+		cilinderObject.rotation.x =4.7;
+		cilinderObject.rotation.z=4.7;
+		scene.add(cilinderObject);
+		
+		
+		cilinderGeometry = new THREE.CylinderGeometry(7,7,10,32,32);
+		cilinderMaterial = new THREE.MeshLambertMaterial({ color:0x000000 });
+		cilinderObject = new THREE.Mesh(cilinderGeometry,cilinderMaterial);
+		cilinderObject.position.x=-120;
+		cilinderObject.position.y=0;
+		cilinderObject.rotation.x =4.7;
+		cilinderObject.rotation.z=4.7;
+		scene.add(cilinderObject);
+		
+		cilinderGeometry = new THREE.CylinderGeometry(7,7,10,32,32);
+		cilinderMaterial = new THREE.MeshLambertMaterial({ color:0x000000 });
+		cilinderObject = new THREE.Mesh(cilinderGeometry,cilinderMaterial);
+		cilinderObject.position.x=-120;
+		cilinderObject.position.y=0;
+		cilinderObject.position.z=18;
+		cilinderObject.rotation.x =4.7;
+		cilinderObject.rotation.z=4.7;
+		scene.add(cilinderObject);
+		
+		cilinderGeometry = new THREE.CylinderGeometry(11,11,10,32,32);
+		cilinderMaterial = new THREE.MeshLambertMaterial({ color:0x000000 });
+		cilinderObject = new THREE.Mesh(cilinderGeometry,cilinderMaterial);
+		cilinderObject.position.x=-70
+	
+		cilinderObject.position.y=0;
+		cilinderObject.position.z=18;
+		cilinderObject.rotation.x =4.7;
+		cilinderObject.rotation.z=4.7;
+		scene.add(cilinderObject);
+		// stator 
+		sttaorGeometry = new THREE.CylinderGeometry(3,3,20,32,32);
+		sttaorMaterial = new THREE.MeshLambertMaterial({ color:0x949607 });
+		sttaorObject = new THREE.Mesh(sttaorGeometry,sttaorMaterial);
+		sttaorObject.position.x=-190;
+		sttaorObject.position.y=0;
+		sttaorObject.rotation.x=4.7;
+		sttaorObject.rotation.z=4.7;
+		scene.add(sttaorObject);
+		
+		
+		
+		//stator 2 
+		sttaorGeometry = new THREE.CylinderGeometry(3,3,30,32,32);
+		sttaorMaterial = new THREE.MeshLambertMaterial({ color:0x949607 });
+		sttaorObject = new THREE.Mesh(sttaorGeometry,sttaorMaterial);
+		sttaorObject.position.x=-130;
+		sttaorObject.position.y=0;
+		sttaorObject.rotation.x=4.7;
+		sttaorObject.rotation.z=4.7;
+		scene.add(sttaorObject);
+		
+		//stator 3
+		sttaorGeometry = new THREE.CylinderGeometry(3,3,55,32,32);
+		sttaorMaterial = new THREE.MeshLambertMaterial({ color:0x949607 });
+		sttaorObject = new THREE.Mesh(sttaorGeometry,sttaorMaterial);
+		sttaorObject.position.x=-100;
+		sttaorObject.position.y=0;
+		sttaorObject.position.z=18;
+		sttaorObject.rotation.x=4.7;
+		sttaorObject.rotation.z=4.7;
+		scene.add(sttaorObject);
+		
+	
+		for(var i=0; i<=17; i++)
+		{
+			 cube = new THREE.Mesh(
+							new THREE.CubeGeometry(46,10,1),
+							new THREE.MeshLambertMaterial({color:0x000000})
+					);
+					cube.position.x=230;
+					cube.position.y=6;
+					
+					cube.rotation.x=15;
+					
+					var clockMarks = new THREE.Object3D();
+					clockMarks.add(cube);
+					clockMarks.rotation.y = 20*i*Math.PI/180; // radiani
+					
+					zabcanik.add(clockMarks);
+		}
+		
+		scene.add(zabcanik);
+		//prsten
+		 
+        var radius = 205;
+        var tubeRadius = 2;
+        var radialSegments = 6 * 10;
+        var tubularSegments = 7 * 15;
+        var arc = Math.PI *2;
+        var geometry = new THREE.TorusGeometry( radius, tubeRadius, radialSegments, tubularSegments, arc );
+        var material =  new THREE.MeshLambertMaterial( { color:0x4d4d4d, shading: THREE.FlatShading } );
+
+        for ( var i = 0; i < 7; i ++ ) {
+          var mesh = new THREE.Mesh( geometry, material );
+		  mesh.rotation.x=4.7;
+		  mesh.position.x=0;
+		  mesh.position.y=i+1.5;
+          mesh.updateMatrix();
+          mesh.matrixAutoUpdate = false;
+          scene.add( mesh );
+        } 
+	
+		 var radius1 = 254;
+        var tubeRadius1 = 2;
+        var radialSegments1 = 6 * 10;
+        var tubularSegments1 = 7 * 15;
+        var arc1 = Math.PI *2;
+        var geometry1 = new THREE.TorusGeometry( radius1, tubeRadius1, radialSegments1, tubularSegments1, arc1 );
+        var material1 =  new THREE.MeshLambertMaterial( { color:0x4d4d4d, shading: THREE.FlatShading } );
+
+        for ( var ii = 0;ii < 7; ii ++ ) {
+          var mesh1 = new THREE.Mesh( geometry1, material1 );
+		  mesh1.rotation.x=4.7;
+		  mesh1.position.x=0;
+		  mesh1.position.y=ii+1.5;
+          mesh1.updateMatrix();
+          mesh1.matrixAutoUpdate = false;
+          scene.add( mesh1 );
+	}
+	
+		
+		// sfera gore
+
+		sverGeopa=new THREE.SphereGeometry( 204, 32, 16, 0, Math.PI * 2, Math.PI, Math.PI );
+		sveraMata = new THREE.MeshLambertMaterial({color:0x4d4d4d});
+		spherea=new THREE.Mesh(sverGeopa,sveraMata);
+			spherea.position.x =100;
+			spherea.position.y = 360;
+			spherea.position.z = 0;
+			matrixa = new THREE.Matrix4(1,0,0,0,0,0.3,0,0,0,0,1,0,0,0,0,1);
+			console.log(matrixa);
+			spherea.applyMatrix( matrixa );
+			scene.add( spherea );
+		
+
+	//        bATERY
+		bateryGeo = new THREE.CubeGeometry(30,20,20);
+		bateryModel = new THREE.MeshLambertMaterial({color:0xffff00}); // 
+		bateryObj = new THREE.Mesh(bateryGeo,bateryModel);
+		bateryObj.position.x = 160;
+				scene.add(bateryObj);
+				
+		
+		bateryG =new THREE.CubeGeometry(10,20,20);
+		bateryM= new THREE.MeshLambertMaterial({color:0xCC3300});
+		bateryOb=new THREE.Mesh(bateryG,bateryM);
+		bateryOb.position.x = 180;
+			scene.add(bateryOb);
+			
+		bateryGeo = new THREE.CubeGeometry(30,20,20);
+		bateryModel = new THREE.MeshLambertMaterial({color:0xffff00}); // 
+		bateryObj = new THREE.Mesh(bateryGeo,bateryModel);
+		bateryObj.position.z = 180;
+				scene.add(bateryObj);
+				
+		
+		bateryG =new THREE.CubeGeometry(10,20,20);
+		bateryM= new THREE.MeshLambertMaterial({color:0xCC3300});
+		bateryOb=new THREE.Mesh(bateryG,bateryM);
+		bateryOb.position.z = 180;
+		bateryOb.position.x = 20;
+			scene.add(bateryOb);
+		
+			bateryGeo = new THREE.CubeGeometry(30,20,20);
+		bateryModel = new THREE.MeshLambertMaterial({color:0xffff00}); // 
+		bateryObj = new THREE.Mesh(bateryGeo,bateryModel);
+		bateryObj.position.z = -180;
+				scene.add(bateryObj);
+				
+		
+		bateryG =new THREE.CubeGeometry(10,20,20);
+		bateryM= new THREE.MeshLambertMaterial({color:0xCC3300});
+		bateryOb=new THREE.Mesh(bateryG,bateryM);
+		bateryOb.position.z = -180;
+		bateryOb.position.x = 20;
+			scene.add(bateryOb);
+		///  batery end
+		
+			bateryGeo = new THREE.CubeGeometry(100,1,100);
+		bateryModel = new THREE.MeshLambertMaterial({color:0x006600}); // 
+		bateryObj = new THREE.Mesh(bateryGeo,bateryModel);
+		
+				scene.add(bateryObj);
+				
+		
+		bateryG =new THREE.CubeGeometry(40,3,30);
+		bateryM= new THREE.MeshLambertMaterial({color:0x000000});
+		bateryOb=new THREE.Mesh(bateryG,bateryM);
+		bateryOb.position.z = 20;
+		bateryOb.position.x = 20;
+			scene.add(bateryOb);
+	
+	
+		bateryG =new THREE.CubeGeometry(40,3,30);
+		bateryM= new THREE.MeshLambertMaterial({color:0x000000});
+		bateryOb=new THREE.Mesh(bateryG,bateryM);
+		bateryOb.position.z = -20;
+		bateryOb.position.x =-20;
+			scene.add(bateryOb);
+			
+		bateryG =new THREE.CubeGeometry(40,3,30);
+		bateryM= new THREE.MeshLambertMaterial({color:0x000000});
+		bateryOb=new THREE.Mesh(bateryG,bateryM);
+		bateryOb.position.z = -20;
+		bateryOb.position.x =-20;
+			scene.add(bateryOb);
+		// ------------------------------------------------------------------------
+		// paket
+		paketGeo = new THREE.CubeGeometry(100,80,100);
+		paketModel = new THREE.MeshLambertMaterial({color:0xba9607}); // 
+		paketObj = new THREE.Mesh(paketGeo,paketModel);
+		paketObj.position.x =0;
+		paketObj.position.y=-145;
+				scene.add(paketObj);
+		
+		
+		
+		
+		for (var a=0; a<=3;a++)
+		{
+		
+				paketGeo = new THREE.Mesh (
+							new THREE.CubeGeometry(20,100,20),
+							new THREE.MeshLambertMaterial({color:0x4d4d4d})
+							); // 
+				
+				paketGeo.position.x =120;
+				paketGeo.position.y=-100;
+				paketGeo.rotation.z=-3;
+				var noze = new THREE.Object3D();
+				noze.add(paketGeo);
+				noze.rotation.y = 90*a*Math.PI/180; // radiani
+					batt.add(noze);
+		}
+		scene.add(batt);
+		
+		
+			for (var a=0; a<=3;a++)
+		{
+		
+				paketGeo = new THREE.Mesh (
+							new THREE.CubeGeometry(20,70,20),
+							new THREE.MeshLambertMaterial({color:0x4d4d4d})
+							); // 
+				
+				paketGeo.position.x =110;
+				paketGeo.position.y=-180;
+				paketGeo.rotation.z=2.5;
+				
+				var noze = new THREE.Object3D();
+				noze.add(paketGeo);
+				noze.rotation.y = 90*a*Math.PI/180; // radiani
+					batt.add(noze);
+		}
+		scene.add(batt);
+		
+		for (var a=0; a<=3;a++)
+		{
+		
+				paketGeo = new THREE.Mesh (
+							new THREE.CylinderGeometry(10,10,20),
+							new THREE.MeshLambertMaterial({color:0x4d4d4d})
+							); // 
+				
+				paketGeo.position.x =127;
+				paketGeo.position.y=-155;
+				paketGeo.rotation.z=4.7;
+				paketGeo.rotation.y=4.7;
+							
+				
+				var noze = new THREE.Object3D();
+				noze.add(paketGeo);
+				noze.rotation.y = 90*a*Math.PI/180; // radiani
+					batt.add(noze);
+		}
+		scene.add(batt);
+		
+			for (var a=0; a<=3;a++)
+		{
+		
+				paketGeo = new THREE.Mesh (
+							new THREE.CylinderGeometry(10,10,20),
+							new THREE.MeshLambertMaterial({color:0x4d4d4d})
+							); // 
+				
+				paketGeo.position.x =85;
+				paketGeo.position.y=-210;
+				paketGeo.rotation.z=4.7;
+				paketGeo.rotation.y=4.7;
+							
+				
+				var noze = new THREE.Object3D();
+				noze.add(paketGeo);
+				noze.rotation.y = 90*a*Math.PI/180; // radiani
+					batt.add(noze);
+		}
+		scene.add(batt);
+		
+			for (var a=0; a<=3;a++)
+		{
+		
+				paketGeo = new THREE.Mesh (
+							new THREE.CubeGeometry(10,50,20),
+							new THREE.MeshLambertMaterial({color:0x4d4d4d})
+							); // 
+				
+				paketGeo.position.x =70;
+				paketGeo.position.y=-220;
+				paketGeo.rotation.z=2;
+				
+				var noze = new THREE.Object3D();
+				noze.add(paketGeo);
+				noze.rotation.y = 90*a*Math.PI/180; // radiani
+					batt.add(noze);
+		}
+		scene.add(batt);
+		
+		
+		
+		
+		
+	}
+		
+
+	 function animate()
+	 {
+		 requestAnimationFrame(animate);
+		render();
+		update();
+	 }
+	 function render()
+	 {
+		
+		zabcanik.rotation.y +=60*0.03*Math.PI/180;
+		renderer.render(scene,camera);
+	 }
+	function update()
+	{
+		control.update();
+	}
+	</script>
+
+</head>
+
+<body onload="init(),animate()">
+<div id="container" style="width:1024px;height:640px;background-color:#000000">
+
+</div>
+</body>
+</html>
